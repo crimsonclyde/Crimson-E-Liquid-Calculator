@@ -1,10 +1,17 @@
+<pre>
  _________        .__
  \_   ___ \_______|__| _____   __________   ____
  /    \  \/\_  __ \  |/     \ /  ___/  _ \ /    \
  \     \____|  | \/  |  | |  \\___ (  <_> )   |  \
   \______  /|__|  |__|__|_|  /____  >____/|___|  /
-        \/                \/     \/           \/
-            CrimsonClydes E-Liquid Calculator
+        \/                \/     \/            \/ 
+             CrimsonClydes E-Liquid Calculator </pre>
+
+Author         | CrimsonClyde
+-------------- | -----------------------------
+**Email   :**  | crimsonclyde_at_gmail.com
+**Version :**  | Alpha 0.1
+**Codename:**  | Roy Trenneman
 
 
 There are thousands of web calculators and a bazillion of apps for iOS and Android.
