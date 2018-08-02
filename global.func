@@ -19,7 +19,7 @@ function wt_licence {
 if ( grep -Fxsq "Licence=1" config.inc ) then
   echo "Licence already accepted. Continuing..."
 else
-  if (whiptail --title "CrimsonClydes E-Liquid Calculator" --scrolltext --yesno "`cat logo`\n       $progname\n\n+++ Use this program only if you accept the licence+++\n\n`cat agplv3.txt`" 30 100) then
+  if (whiptail --title "CrimsonClydes E-Liquid Calculator" --scrolltext --yesno "`cat logo`\n       $progname\n\n+++ Use this program only if you accept the licence+++\n\n`cat LICENSE`" 30 100) then
     echo "Licence=1" > config.inc
     return
   else
