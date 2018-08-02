@@ -1,10 +1,11 @@
-# _________        .__
-# \_   ___ \_______|__| _____   __________   ____
-# /    \  \/\_  __ \  |/     \ /  ___/  _ \ /    \
-# \     \____|  | \/  |  | |  \\___ (  <_> )   |  \
-#  \______  /|__|  |__|__|_|  /____  >____/|___|  /
-#        \/                \/     \/           \/
-#            CrimsonClydes E-Liquid Calculator
+ _________        .__
+ \_   ___ \_______|__| _____   __________   ____
+ /    \  \/\_  __ \  |/     \ /  ___/  _ \ /    \
+ \     \____|  | \/  |  | |  \\___ (  <_> )   |  \
+  \______  /|__|  |__|__|_|  /____  >____/|___|  /
+        \/                \/     \/           \/
+            CrimsonClydes E-Liquid Calculator
+
 
 There are thousands of web calculators and a bazillion of apps for iOS and Android.
 But, I believe the world needs a shell based e-liquid calculator.
