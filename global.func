@@ -1,0 +1,88 @@
+# Print logo
+function print_logo {
+  cat logo
+  echo "       $progname"
+}
+
+# Insert break
+function ins_br {
+  echo -e "\n"
+}
+
+# Clean the screen
+function clear_screen {
+  clear
+}
+
+# Box - Licence Aggreement
+function wt_licence {
+if ( grep -Fxsq "Licence=1" config.inc ) then
+  echo "Licence already accepted. Continuing..."
+else
+  if (whiptail --title "CrimsonClydes E-Liquid Calculator" --scrolltext --yesno "`cat logo`\n       $progname\n\n+++ Use this program only if you accept the licence+++\n\n`cat agplv3.txt`" 30 100) then
+    echo "Licence=1" > config.inc
+    return
+  else
+    echo "Exiting..."
+  fi
+fi
+}
+
+# Box - Menu
+function main_menu {
+while [ 1 ]
+do
+CHOICE=$(
+whiptail --title "$progname" --menu "Make your choice" 16 80 5 \
+	"1)" "Liquid Amount" \
+	"2)" "Aroma" \
+	"3)" "Nicotine Base" \
+  "4)" "Liquid strength" \
+	"9)" "Exit"  3>&2 2>&1 1>&3
+)
+
+case $CHOICE in
+	"1)")
+		question="How much Liquid to you want to make (ml)?"
+    result="ELC_AMOUNT"
+	;;
+
+  "2)")
+    question="How much aroma you want to add (in %)?"
+    result="ELC_AROMA"
+	;;
+
+  "4)")
+    question="How strong is your nicotine base (mg/ml)?"
+    result="ELC_NICBASE_STRENGTH"
+  ;;
+
+	"4)")
+    question="What's your desired strength (mg)?"
+    result="ELC_LIQUID_STRENGTH"
+  ;;
+
+	"9)") return
+  ;;
+esac
+$result=$(whiptail --title "$progname" --inputbox "$question" 20 78 3>&1 1>&2 2>&3)
+done
+}
+
+
+
+
+
+# Box - Input Liquid
+function in_liquid {
+elc_amount=$(whiptail --inputbox "How much liquid you want to make? (ml): " 8 78 50  3>&1 1>&2 2>&3)
+
+exitstatus=$?
+if [ $exitstatus = 0 ]; then
+    echo "User selected Ok and entered " $elc_amount
+else
+    echo "User selected Cancel."
+fi
+
+echo "(Exit status was $exitstatus)"
+}

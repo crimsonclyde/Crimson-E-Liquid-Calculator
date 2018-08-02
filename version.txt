@@ -1,0 +1,16 @@
+##########
+## V0.1 ## Version Name: Roy Trenneman
+##########
+
+- Installer for macOS
+  Minor checks
+  Set environment proxy if uncomented
+  Installation Homebrew (macOS package manager)
+  Installation Newt (whiptail)
+- Basic file structure
+  Seperated function files
+- Added license file
+- Main program
+  First whiptail boxes ready
+  License check
+  Logo works in whiptail msgbox

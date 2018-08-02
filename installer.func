@@ -1,0 +1,125 @@
+
+# Display header info incl. logo
+function inst_info {
+  echo "ATTENTION"
+  echo "We need Homebrew a package manager for macOS."
+  echo "If you already have it, great, if not we will install it for you."
+  echo "URL: https://brew.sh/"
+}
+
+# Execute rights for main program
+function exec_rights {
+  if [ -x $elc ]; then
+    echo "File is already executable. Continuing..."
+    return
+  else
+    echo "File is not executable, please provide your sudo password to change it..."
+    sudo chmod +x $elc
+  fi
+}
+
+# Check macOS version
+function macos_version_chk {
+  if [[ ! $(sw_vers -productVersion | egrep '10.([89]|13)')  ]]
+  then
+    echo "This script is only certified for OSX versions High Sierra"
+    exit 0
+  fi
+}
+
+# Check if disk space is under 90%
+function disk_space_chk {
+  df -H / | grep -vE '^Filesystem|tmpfs|cdrom' | awk '{ print $5 " " $1 }' | while read output;
+  do
+    usep=$(echo $output | awk '{ print $1}' | cut -d'%' -f1  )
+    partition=$(echo $output | awk '{ print $2 }' )
+    if [ $usep -ge 90 ]; then
+      echo "Running out of space \"$partition ($usep%)\" on $(hostname) on $(date)"
+      echo "Aborting..."
+      exit 0
+    fi
+  done
+}
+
+# Confirm installation of Homebrew Package Manager
+function confirm_hb_inst {
+  if [ ! -f /usr/local/bin/brew ]; then
+    echo "Homebrew not installed on your system. Installing now..."
+    read -r -p "Are you sure you want to install it? [Y/n] " response
+    response=$response | awk '{print tolower($0)}'
+    if [[ $response =~ ^(yes|y| ) ]] || [[ -z $response ]]; then
+      echo "Installing Homebrew..."
+      echo "Please follow the instructions..."
+      install_homebrew
+    else
+      echo "Aborting..."
+    fi
+  else
+    echo "Homebrew already installed. Continuing..."
+    return
+  fi
+}
+
+# Set a global variable for system proxy
+# Cause we need it for CURL downloads
+# export exports the variable assignment to sub-shells, i.e. shells which are started as child processes of the shell containing the export directive.
+# Your command-line environment is the parent of the script's shell, so it does not see the variable assignment.
+# Means this will only work while the shell script is running!
+
+function set_shell_proxy {
+  if [ -z ${puser+x} ]; then
+    echo "No proxy needed. Continuing..."
+  else
+    echo "Set environment variable export ALL_PROXY..."
+    export ALL_PROXY="http://$puser:$ppass@$proxy:$port"
+  fi
+}
+
+# Start Homebrew installer
+function install_homebrew {
+  # Proxy support
+  if [ -z ${puser+x} ]; then
+      echo "Installing Homebrew without proxy..."
+      /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+  else
+      echo "Installing Homebrew behind proxy..."
+      /usr/bin/ruby -e "$(curl --proxy http://$puser:$ppass@$proxy:$port -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+  fi
+}
+
+
+# Install / Repair NEWT
+# Proxy is set via function set_shell_proxy
+function install_newt {
+  if [ ! -f /usr/local/bin/whiptail ]; then
+    echo "Installing newt/whiptail..."
+    brew install newt
+  else
+    echo "Newt/Whiptail already installed. Continuing..."
+    # Test if whiptail broken
+    whiptail -v > /dev/null 2>/dev/null
+    if [[ $? -ne 0 ]]; then
+      echo "Newt/whiptail installation broken, reinstalling..."
+      brew reinstall newt
+    fi
+  fi
+}
+
+# Installer end
+function call_elc {
+  echo "Installation done."
+  read -r -p "Do you want to start Clydes E-Liquid Calculator? [Y/n] " response
+  response=$response | awk '{print tolower($0)}'
+  if [[ $response =~ ^(yes|y| ) ]] || [[ -z $response ]]; then
+    echo "Starting ELC in..."
+    echo "...3..."
+    sleep 1
+    echo "...2.."
+    sleep 1
+    echo "...1..."
+    sleep 1
+    ./$elc
+  else
+    echo "Aborting..."
+  fi
+}
